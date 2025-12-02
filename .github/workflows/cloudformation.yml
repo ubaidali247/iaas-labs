@@ -11,17 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AKIAVCGUSF2ZMTVA46WH }}
           aws-secret-access-key: ${{ secrets.njl1Dwm9h4Huu04FEIrKWioMZTdwbYjC9nAKdCFS }}
           aws-region: eu-west-1
 
-      - name: Deploy CloudFormation Stack
+      - name: Deploy CloudFormation
         run: |
           aws cloudformation deploy \
             --template-file cf-ec2-lab.yaml \
