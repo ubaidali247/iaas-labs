@@ -6,20 +6,28 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  AWS_REGION: eu-west-1
+
 jobs:
-  deploy-cf:
+  deploy-cloudformation:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Validate Template
+        run: |
+          aws cloudformation validate-template \
+            --template-body file://cf-ec2-lab.yaml
 
       - name: Deploy CloudFormation Stack
         run: |
