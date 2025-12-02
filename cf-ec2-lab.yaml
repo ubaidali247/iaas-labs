@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation Lab - EC2 with Security Group
+
+Resources:
+
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow SSH
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro          # eligible type
+      SecurityGroupIds:
+        - !Ref MySecurityGroup
+      ImageId: ami-0acd9fd39de089f9b     # latest Amazon Linux 2 AMI in eu-west-1
+      Tags:
+        - Key: Name
+          Value: CF-EC2-Lab
